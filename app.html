@@ -6,35 +6,2452 @@
 <title>Noto</title>
 
 <style>
-* {
-    box-sizing: border-box;
+:root{
+    --bg:#f5f7fb;
+    --panel:#ffffff;
+    --panel2:#f8fafc;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --accent:#6366f1;
+    --accent-soft:#eef2ff;
+    --danger:#dc2626;
+    --sidebar:280px;
 }
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f5f7fb;
-    color: #1f2937;
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow:hidden;
+}
+
+button,input,textarea,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    height:100vh;
+    display:flex;
 }
 
 /* SIDEBAR */
 
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 270px;
-    background: white;
-    border-right: 1px solid #e5e7eb;
-    padding: 25px 15px;
-    overflow-y: auto;
+.sidebar{
+    width:var(--sidebar);
+    flex-shrink:0;
+    background:var(--panel);
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    transition:.2s;
 }
 
-.logo {
-    font-size: 26px;
-    font-weight: 700;
-    padding: 0 10px;
+.sidebar.collapsed{
+    width:70px;
+}
+
+.sidebar-top{
+    padding:20px 15px;
+    border-bottom:1px solid var(--border);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:24px;
+    font-weight:750;
+    padding:5px;
+}
+
+.logo-symbol{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:var(--text);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.home-button{
+    width:100%;
+    border:0;
+    background:var(--panel2);
+    padding:11px;
+    border-radius:10px;
+    text-align:left;
+    margin-top:18px;
+}
+
+.sidebar-section{
+    padding:18px 12px 8px;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.tree{
+    flex:1;
+    overflow:auto;
+    padding:0 8px;
+}
+
+.tree-row{
+    display:flex;
+    align-items:center;
+    min-height:38px;
+    border-radius:9px;
+}
+
+.tree-row:hover{
+    background:#f3f4f6;
+}
+
+.tree-arrow{
+    width:28px;
+    height:30px;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+}
+
+.tree-name{
+    flex:1;
+    padding:8px 3px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.tree-menu{
+    width:30px;
+    height:30px;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+}
+
+.tree-children{
+    margin-left:18px;
+    border-left:1px solid var(--border);
+    padding-left:5px;
+}
+
+.add-subject{
+    margin:10px 12px 15px;
+    padding:11px;
+    border:1px dashed #cbd5e1;
+    border-radius:10px;
+    background:transparent;
+    color:var(--muted);
+}
+
+.add-subject:hover{
+    background:var(--panel2);
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.topbar{
+    height:64px;
+    flex-shrink:0;
+    background:var(--panel);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    gap:10px;
+}
+
+.topbar-title{
+    font-weight:650;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.topbar-spacer{
+    flex:1;
+}
+
+.icon-button{
+    border:0;
+    background:transparent;
+    width:38px;
+    height:38px;
+    border-radius:9px;
+}
+
+.icon-button:hover{
+    background:#f3f4f6;
+}
+
+.profile-button{
+    padding:9px 13px;
+    border:0;
+    border-radius:9px;
+    background:#f3f4f6;
+}
+
+/* DASHBOARD */
+
+.page{
+    flex:1;
+    overflow:auto;
+}
+
+.dashboard{
+    max-width:1150px;
+    padding:45px;
+}
+
+.dashboard h1{
+    margin:0;
+    font-size:36px;
+}
+
+.dashboard-intro{
+    color:var(--muted);
+    margin:8px 0 35px;
+}
+
+.progress-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.progress-head{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.progress-number{
+    font-size:38px;
+    font-weight:750;
+}
+
+.progress-bar{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:18px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    transition:.3s;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.stat{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px;
+}
+
+.stat-number{
+    font-size:32px;
+    font-weight:700;
+    margin:8px 0;
+}
+
+.subject-progress{
+    margin-top:25px;
+}
+
+.subject-progress-row{
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.subject-progress-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+/* EDITOR */
+
+.editor-page{
+    display:none;
+    flex:1;
+    min-height:0;
+    flex-direction:column;
+}
+
+.editor-toolbar{
+    background:var(--panel);
+    border-bottom:1px solid var(--border);
+    padding:8px 12px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    flex-wrap:wrap;
+    overflow:auto;
+}
+
+.tool{
+    border:0;
+    background:transparent;
+    min-width:36px;
+    height:36px;
+    border-radius:8px;
+}
+
+.tool:hover{
+    background:#f3f4f6;
+}
+
+.tool.active{
+    background:var(--accent-soft);
+    color:var(--accent);
+}
+
+.tool-separator{
+    width:1px;
+    height:25px;
+    background:var(--border);
+    margin:0 4px;
+}
+
+.editor-container{
+    flex:1;
+    overflow:auto;
+    background:var(--bg);
+    padding:40px 20px;
+}
+
+.document{
+    width:min(900px,100%);
+    min-height:850px;
+    margin:0 auto;
+    background:white;
+    padding:65px;
+    outline:none;
+    line-height:1.7;
+    font-size:17px;
+    box-shadow:0 2px 12px rgba(0,0,0,.04);
+}
+
+.document:empty:before{
+    content:"Start writing...";
+    color:#c4c7cc;
+}
+
+.references{
+    width:min(900px,100%);
+    margin:0 auto;
+    background:white;
+    padding:0 65px 65px;
+    color:var(--muted);
+}
+
+.references-line{
+    border-top:1px solid #d1d5db;
+    padding-top:15px;
+}
+
+/* READING MODE */
+
+.reading-page{
+    display:none;
+    flex:1;
+    overflow:auto;
+}
+
+.reading-toolbar{
+    background:white;
+    border-bottom:1px solid var(--border);
+    padding:8px 15px;
+    display:flex;
+    gap:5px;
+}
+
+.reading-content{
+    max-width:850px;
+    margin:auto;
+    padding:55px 25px 100px;
+    background:#fffdf7;
+    min-height:100%;
+    line-height:1.9;
+    font-size:18px;
+}
+
+.reading-content h1{
+    font-size:34px;
+}
+
+/* SEARCH */
+
+.search-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.25);
+    z-index:2000;
+    align-items:flex-start;
+    justify-content:center;
+    padding-top:100px;
+}
+
+.search-box{
+    width:min(650px,90%);
+    background:white;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+    overflow:hidden;
+}
+
+.search-input{
+    width:100%;
+    border:0;
+    border-bottom:1px solid var(--border);
+    padding:18px;
+    outline:none;
+}
+
+.search-results{
+    max-height:400px;
+    overflow:auto;
+}
+
+.search-result{
+    padding:15px 18px;
+    border-bottom:1px solid var(--border);
+    cursor:pointer;
+}
+
+.search-result:hover{
+    background:#f8fafc;
+}
+
+/* CONTEXT MENU */
+
+.context-menu{
+    display:none;
+    position:fixed;
+    z-index:3000;
+    width:190px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 12px 35px rgba(0,0,0,.15);
+    padding:6px;
+}
+
+.context-menu button{
+    width:100%;
+    border:0;
+    background:transparent;
+    text-align:left;
+    padding:10px;
+    border-radius:7px;
+}
+
+.context-menu button:hover{
+    background:#f3f4f6;
+}
+
+.context-menu .danger{
+    color:var(--danger);
+}
+
+/* SETTINGS */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.3);
+    z-index:2500;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    width:min(600px,100%);
+    max-height:85vh;
+    overflow:auto;
+    background:white;
+    border-radius:18px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.setting{
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.setting label{
+    display:block;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.setting input,
+.setting select{
+    width:100%;
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:9px;
+}
+
+.theme-options{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.theme{
+    width:45px;
+    height:45px;
+    border-radius:10px;
+    border:2px solid var(--border);
+    cursor:pointer;
+}
+
+.theme.one{background:#f5f7fb}
+.theme.two{background:#fffdf7}
+.theme.three{background:#f1f7f4}
+.theme.four{background:#f5f1fa}
+.theme.five{background:#f7f3ed}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    :root{
+        --sidebar:220px;
+    }
+
+    .dashboard{
+        padding:30px 20px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .document{
+        padding:35px 25px;
+    }
+
+    .references{
+        padding:0 25px 35px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-top">
+
+        <div class="logo">
+            <div class="logo-symbol">N</div>
+            <span>Noto</span>
+        </div>
+
+        <button class="home-button" onclick="showDashboard()">
+            🏠 &nbsp; Study Dashboard
+        </button>
+
+    </div>
+
+    <div class="sidebar-section">
+        Subjects
+    </div>
+
+    <div class="tree" id="tree"></div>
+
+    <button class="add-subject" onclick="addRootItem()">
+        + Add subject
+    </button>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+    <button class="icon-button" onclick="toggleSidebar()" title="Toggle navigation">
+        ☰
+    </button>
+
+    <div class="topbar-title" id="topbarTitle">
+        Study Dashboard
+    </div>
+
+    <div class="topbar-spacer"></div>
+
+    <button class="icon-button" onclick="openSearch()" title="Search">
+        🔍
+    </button>
+
+    <button class="icon-button" onclick="openSettings()" title="Settings">
+        ⚙
+    </button>
+
+    <button class="profile-button" onclick="openProfile()">
+        Profile
+    </button>
+
+</header>
+
+
+<!-- DASHBOARD -->
+
+<section class="page" id="dashboardPage">
+
+<div class="dashboard">
+
+    <h1>Study Dashboard</h1>
+
+    <p class="dashboard-intro">
+        Your space to organise, write and track your learning.
+    </p>
+
+    <div class="progress-card">
+
+        <div class="progress-head">
+            <div>
+                <strong>Overall progress</strong>
+                <p style="color:var(--muted)">
+                    Your learning progress across Noto
+                </p>
+            </div>
+
+            <div class="progress-number" id="overallProgress">
+                0%
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+            <div>📄</div>
+            <div class="stat-number" id="documentCount">0</div>
+            <div style="color:var(--muted)">Documents</div>
+        </div>
+
+        <div class="stat">
+            <div>📚</div>
+            <div class="stat-number" id="subjectCount">0</div>
+            <div style="color:var(--muted)">Subjects</div>
+        </div>
+
+        <div class="stat">
+            <div>✓</div>
+            <div class="stat-number" id="completedCount">0</div>
+            <div style="color:var(--muted)">Completed</div>
+        </div>
+
+    </div>
+
+
+    <div class="progress-card subject-progress">
+
+        <h2>Progress by subject</h2>
+
+        <div id="subjectProgress"></div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- EDITOR -->
+
+<section class="editor-page" id="editorPage">
+
+    <div class="editor-toolbar">
+
+        <button class="tool" onclick="exec('undo')">↶</button>
+        <button class="tool" onclick="exec('redo')">↷</button>
+
+        <span class="tool-separator"></span>
+
+        <select id="formatSelect" onchange="formatBlock(this.value)"
+                style="height:36px;border:1px solid var(--border);border-radius:8px;padding:0 8px">
+            <option value="p">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+        </select>
+
+        <button class="tool" onclick="exec('bold')"><b>B</b></button>
+        <button class="tool" onclick="exec('italic')"><i>I</i></button>
+        <button class="tool" onclick="exec('underline')"><u>U</u></button>
+
+        <span class="tool-separator"></span>
+
+        <button class="tool" onclick="exec('justifyLeft')">≡</button>
+        <button class="tool" onclick="exec('justifyCenter')">≣</button>
+        <button class="tool" onclick="exec('justifyRight')">≡</button>
+
+        <button class="tool" onclick="exec('insertUnorderedList')">☷</button>
+        <button class="tool" onclick="exec('insertOrderedList')">1.</button>
+
+        <span class="tool-separator"></span>
+
+        <button class="tool" onclick="insertLink()">🔗</button>
+        <button class="tool" onclick="insertImage()">🖼</button>
+
+        <span class="tool-separator"></span>
+
+        <button class="tool" onclick="openAI()">✨ AI</button>
+
+        <button class="tool" onclick="openReadingMode()">
+            👁 Reading
+        </button>
+
+        <button class="tool" onclick="toggleDocumentBackground()">
+            🎨
+        </button>
+
+        <button class="tool" onclick="window.print()">
+            🖨
+        </button>
+
+        <button class="tool" onclick="exportDocument()">
+            ⇩
+        </button>
+
+    </div>
+
+
+    <div class="editor-container">
+
+        <div
+            id="editor"
+            class="document"
+            contenteditable="true"
+            spellcheck="true"
+        ></div>
+
+        <div class="references">
+
+            <div class="references-line">
+                References
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- READING MODE -->
+
+<section class="reading-page" id="readingPage">
+
+    <div class="reading-toolbar">
+
+        <button class="tool" onclick="closeReadingMode()">
+            ← Back to editing
+        </button>
+
+        <button class="tool" onclick="readingFont(-1)">
+            A−
+        </button>
+
+        <button class="tool" onclick="readingFont(1)">
+            A+
+        </button>
+
+        <button class="tool" onclick="execReading('bold')">
+            <b>B</b>
+        </button>
+
+        <button class="tool" onclick="openAI()">
+            ✨ AI
+        </button>
+
+    </div>
+
+    <article class="reading-content" id="readingContent"></article>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- CONTEXT MENU -->
+
+<div class="context-menu" id="contextMenu">
+
+    <button onclick="addChild()">+ Add sub-item</button>
+    <button onclick="renameItem()">Rename</button>
+    <button onclick="duplicateItem()">Duplicate</button>
+    <button onclick="moveItem()">Move</button>
+    <button onclick="markComplete()">Mark complete</button>
+    <button onclick="deleteItem()" class="danger">Delete</button>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="search-overlay" id="searchOverlay">
+
+    <div class="search-box">
+
+        <input
+            id="searchInput"
+            class="search-input"
+            placeholder="Search subjects, documents or text..."
+            oninput="performSearch()"
+        >
+
+        <div class="search-results" id="searchResults"></div>
+
+    </div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="modal" id="settingsModal">
+
+<div class="modal-box">
+
+    <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="icon-button" onclick="closeModal('settingsModal')">
+            ✕
+        </button>
+    </div>
+
+    <div class="setting">
+
+        <label>Appearance</label>
+
+        <div class="theme-options">
+
+            <div class="theme one" onclick="setTheme('#f5f7fb')"></div>
+            <div class="theme two" onclick="setTheme('#fffdf7')"></div>
+            <div class="theme three" onclick="setTheme('#f1f7f4')"></div>
+            <div class="theme four" onclick="setTheme('#f5f1fa')"></div>
+            <div class="theme five" onclick="setTheme('#f7f3ed')"></div>
+
+        </div>
+
+        <p style="color:var(--muted);font-size:13px">
+            Light, eye-friendly themes. Document backgrounds can be changed separately.
+        </p>
+
+    </div>
+
+    <div class="setting">
+
+        <label>Default font size</label>
+
+        <select id="defaultFontSize" onchange="changeDefaultFont(this.value)">
+            <option value="16">16 px</option>
+            <option value="17" selected>17 px</option>
+            <option value="18">18 px</option>
+            <option value="19">19 px</option>
+            <option value="20">20 px</option>
+        </select>
+
+    </div>
+
+    <div class="setting">
+
+        <label>Navigation</label>
+
+        <button class="profile-button" onclick="toggleSidebar();closeModal('settingsModal')">
+            Collapse / expand navigation
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div class="modal" id="profileModal">
+
+<div class="modal-box">
+
+    <div class="modal-header">
+        <h2>Profile</h2>
+        <button class="icon-button" onclick="closeModal('profileModal')">
+            ✕
+        </button>
+    </div>
+
+    <div class="setting">
+
+        <label>Name</label>
+
+        <input id="profileName" placeholder="Your name">
+
+    </div>
+
+    <div class="setting">
+
+        <label>Email</label>
+
+        <input id="profileEmail" disabled>
+
+    </div>
+
+    <button
+        class="profile-button"
+        onclick="saveProfile()"
+        style="margin-top:15px"
+    >
+        Save changes
+    </button>
+
+    <button
+        class="profile-button"
+        onclick="logout()"
+        style="margin-top:10px"
+    >
+        Log Out
+    </button>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* SUPABASE */
+
+const SUPABASE_URL =
+"https://bauqaxntmhpiuqdnkrun.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhdXFheG50bWhwaXVxZG5rcnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTM4MTUsImV4cCI6MjEwNTU2OTgxNX0.0p5V6-p4MddUc2j7WGbCyfOnEGNIJMK3uTQzETZAeiA";
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+
+/* DATA */
+
+let treeData = [
+
+    {
+        id:1,
+        name:"Symptom-based",
+        children:[],
+        expanded:true,
+        completed:false
+    }
+
+];
+
+let nextId = 2;
+
+let selectedItem = null;
+
+let currentItem = null;
+
+let documents = {};
+
+let currentDocumentBackground = "#ffffff";
+
+
+/* STORAGE */
+
+function saveLocalData(){
+
+    localStorage.setItem(
+        "notoTree",
+        JSON.stringify(treeData)
+    );
+
+    localStorage.setItem(
+        "notoDocuments",
+        JSON.stringify(documents)
+    );
+
+}
+
+
+function loadLocalData(){
+
+    try{
+
+        const savedTree =
+            localStorage.getItem("notoTree");
+
+        const savedDocuments =
+            localStorage.getItem("notoDocuments");
+
+        if(savedTree){
+            treeData = JSON.parse(savedTree);
+        }
+
+        if(savedDocuments){
+            documents = JSON.parse(savedDocuments);
+        }
+
+    }catch(error){
+
+        console.log("Could not load saved Noto data.");
+
+    }
+
+}
+
+
+/* TREE */
+
+function renderTree(){
+
+    const tree =
+        document.getElementById("tree");
+
+    tree.innerHTML = "";
+
+    treeData.forEach(item=>{
+        tree.appendChild(
+            createTreeItem(item)
+        );
+    });
+
+    updateDashboard();
+
+}
+
+
+function createTreeItem(item){
+
+    const wrapper =
+        document.createElement("div");
+
+    const row =
+        document.createElement("div");
+
+    row.className = "tree-row";
+
+
+    const arrow =
+        document.createElement("button");
+
+    arrow.className = "tree-arrow";
+
+    if(item.children && item.children.length){
+
+        arrow.textContent =
+            item.expanded ? "▼" : "▶";
+
+        arrow.onclick = event => {
+
+            event.stopPropagation();
+
+            item.expanded =
+                !item.expanded;
+
+            saveLocalData();
+
+            renderTree();
+
+        };
+
+    }
+
+
+    const name =
+        document.createElement("div");
+
+    name.className = "tree-name";
+
+    name.textContent =
+        (item.completed ? "✓ " : "") +
+        item.name;
+
+    name.onclick = () =>
+        openDocument(item);
+
+
+    name.oncontextmenu = event => {
+
+        event.preventDefault();
+
+        selectedItem = item;
+
+        showContextMenu(
+            event.clientX,
+            event.clientY
+        );
+
+    };
+
+
+    const menu =
+        document.createElement("button");
+
+    menu.className = "tree-menu";
+
+    menu.textContent = "⋯";
+
+    menu.onclick = event => {
+
+        event.stopPropagation();
+
+        selectedItem = item;
+
+        showContextMenu(
+            event.clientX,
+            event.clientY
+        );
+
+    };
+
+
+    row.appendChild(arrow);
+    row.appendChild(name);
+    row.appendChild(menu);
+
+    wrapper.appendChild(row);
+
+
+    if(
+        item.children &&
+        item.children.length &&
+        item.expanded
+    ){
+
+        const children =
+            document.createElement("div");
+
+        children.className =
+            "tree-children";
+
+        item.children.forEach(child=>{
+
+            children.appendChild(
+                createTreeItem(child)
+            );
+
+        });
+
+        wrapper.appendChild(children);
+
+    }
+
+    return wrapper;
+
+}
+
+
+/* ADD */
+
+function addRootItem(){
+
+    const name =
+        prompt("Enter subject name:");
+
+    if(!name || !name.trim()){
+        return;
+    }
+
+    treeData.push({
+
+        id:nextId++,
+        name:name.trim(),
+        children:[],
+        expanded:true,
+        completed:false
+
+    });
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+function addChild(){
+
+    if(!selectedItem){
+        return;
+    }
+
+    hideContextMenu();
+
+    const name =
+        prompt("Enter name:");
+
+    if(!name || !name.trim()){
+        return;
+    }
+
+    if(!selectedItem.children){
+        selectedItem.children = [];
+    }
+
+    selectedItem.children.push({
+
+        id:nextId++,
+        name:name.trim(),
+        children:[],
+        expanded:true,
+        completed:false
+
+    });
+
+    selectedItem.expanded = true;
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+/* FIND */
+
+function findParent(list,target){
+
+    for(const item of list){
+
+        if(item === target){
+            return list;
+        }
+
+        if(item.children){
+
+            const result =
+                findParent(
+                    item.children,
+                    target
+                );
+
+            if(result){
+                return result;
+            }
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+function findItemById(list,id){
+
+    for(const item of list){
+
+        if(item.id === id){
+            return item;
+        }
+
+        if(item.children){
+
+            const result =
+                findItemById(
+                    item.children,
+                    id
+                );
+
+            if(result){
+                return result;
+            }
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* RENAME */
+
+function renameItem(){
+
+    if(!selectedItem){
+        return;
+    }
+
+    hideContextMenu();
+
+    const name =
+        prompt(
+            "Rename:",
+            selectedItem.name
+        );
+
+    if(!name || !name.trim()){
+        return;
+    }
+
+    selectedItem.name =
+        name.trim();
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+/* DELETE */
+
+function deleteItem(){
+
+    if(!selectedItem){
+        return;
+    }
+
+    hideContextMenu();
+
+    if(
+        !confirm(
+            "Delete " +
+            selectedItem.name +
+            " and everything inside it?"
+        )
+    ){
+        return;
+    }
+
+    const parent =
+        findParent(
+            treeData,
+            selectedItem
+        );
+
+    if(parent){
+
+        const index =
+            parent.indexOf(
+                selectedItem
+            );
+
+        if(index >= 0){
+            parent.splice(index,1);
+        }
+
+    }
+
+    delete documents[selectedItem.id];
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+/* DUPLICATE */
+
+function cloneTree(item){
+
+    return {
+
+        id:nextId++,
+        name:item.name + " copy",
+        children:(item.children || [])
+            .map(cloneTree),
+        expanded:item.expanded,
+        completed:false
+
+    };
+
+}
+
+
+function duplicateItem(){
+
+    if(!selectedItem){
+        return;
+    }
+
+    hideContextMenu();
+
+    const parent =
+        findParent(
+            treeData,
+            selectedItem
+        );
+
+    if(parent){
+
+        const copy =
+            cloneTree(selectedItem);
+
+        parent.splice(
+            parent.indexOf(selectedItem)+1,
+            0,
+            copy
+        );
+
+    }
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+/* MOVE */
+
+function moveItem(){
+
+    if(!selectedItem){
+        return;
+    }
+
+    hideContextMenu();
+
+    const parent =
+        findParent(
+            treeData,
+            selectedItem
+        );
+
+    if(!parent){
+        return;
+    }
+
+    const name =
+        prompt(
+            "Move under which existing item? Enter its exact name:"
+        );
+
+    if(!name){
+        return;
+    }
+
+    const target =
+        findByName(
+            treeData,
+            name.trim()
+        );
+
+    if(!target || target === selectedItem){
+
+        alert("Item not found.");
+
+        return;
+
+    }
+
+    const oldIndex =
+        parent.indexOf(selectedItem);
+
+    if(oldIndex >= 0){
+        parent.splice(oldIndex,1);
+    }
+
+    if(!target.children){
+        target.children=[];
+    }
+
+    target.children.push(selectedItem);
+
+    target.expanded=true;
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+function findByName(list,name){
+
+    for(const item of list){
+
+        if(
+            item.name.toLowerCase() ===
+            name.toLowerCase()
+        ){
+            return item;
+        }
+
+        if(item.children){
+
+            const result =
+                findByName(
+                    item.children,
+                    name
+                );
+
+            if(result){
+                return result;
+            }
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* COMPLETE */
+
+function markComplete(){
+
+    if(!selectedItem){
+        return;
+    }
+
+    selectedItem.completed =
+        !selectedItem.completed;
+
+    hideContextMenu();
+
+    saveLocalData();
+
+    renderTree();
+
+}
+
+
+/* CONTEXT */
+
+function showContextMenu(x,y){
+
+    const menu =
+        document.getElementById(
+            "contextMenu"
+        );
+
+    menu.style.display="block";
+
+    menu.style.left =
+        Math.min(
+            x,
+            window.innerWidth-200
+        ) + "px";
+
+    menu.style.top =
+        Math.min(
+            y,
+            window.innerHeight-300
+        ) + "px";
+
+}
+
+
+function hideContextMenu(){
+
+    document.getElementById(
+        "contextMenu"
+    ).style.display="none";
+
+}
+
+
+document.addEventListener(
+    "click",
+    event=>{
+
+        if(
+            !event.target.closest(
+                ".context-menu"
+            )
+        ){
+            hideContextMenu();
+        }
+
+    }
+);
+
+
+/* DOCUMENT */
+
+function openDocument(item){
+
+    currentItem = item;
+
+    document.getElementById(
+        "dashboardPage"
+    ).style.display="none";
+
+    document.getElementById(
+        "readingPage"
+    ).style.display="none";
+
+    document.getElementById(
+        "editorPage"
+    ).style.display="flex";
+
+    document.getElementById(
+        "topbarTitle"
+    ).textContent =
+        item.name;
+
+    const editor =
+        document.getElementById(
+            "editor"
+        );
+
+    editor.innerHTML =
+        documents[item.id] || "";
+
+    editor.style.background =
+        currentDocumentBackground;
+
+    editor.focus();
+
+}
+
+
+document.getElementById(
+    "editor"
+).addEventListener(
+    "input",
+    function(){
+
+        if(!currentItem){
+            return;
+        }
+
+        documents[currentItem.id] =
+            this.innerHTML;
+
+        saveLocalData();
+
+        updateDashboard();
+
+    }
+);
+
+
+/* DASHBOARD */
+
+function showDashboard(){
+
+    document.getElementById(
+        "editorPage"
+    ).style.display="none";
+
+    document.getElementById(
+        "readingPage"
+    ).style.display="none";
+
+    document.getElementById(
+        "dashboardPage"
+    ).style.display="block";
+
+    document.getElementById(
+        "topbarTitle"
+    ).textContent =
+        "Study Dashboard";
+
+    updateDashboard();
+
+}
+
+
+function countItems(list){
+
+    let total=0;
+
+    list.forEach(item=>{
+
+        total++;
+
+        if(item.children){
+            total +=
+                countItems(item.children);
+        }
+
+    });
+
+    return total;
+
+}
+
+
+function countCompleted(list){
+
+    let total=0;
+
+    list.forEach(item=>{
+
+        if(item.completed){
+            total++;
+        }
+
+        if(item.children){
+
+            total +=
+                countCompleted(
+                    item.children
+                );
+
+        }
+
+    });
+
+    return total;
+
+}
+
+
+function updateDashboard(){
+
+    const total =
+        countItems(treeData);
+
+    const completed =
+        countCompleted(treeData);
+
+    const progress =
+        total ?
+        Math.round(
+            completed / total * 100
+        ) :
+        0;
+
+    document.getElementById(
+        "subjectCount"
+    ).textContent = total;
+
+    document.getElementById(
+        "completedCount"
+    ).textContent = completed;
+
+    document.getElementById(
+        "documentCount"
+    ).textContent =
+        Object.keys(documents).length;
+
+    document.getElementById(
+        "overallProgress"
+    ).textContent =
+        progress + "%";
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        progress + "%";
+
+
+    const container =
+        document.getElementById(
+            "subjectProgress"
+        );
+
+    container.innerHTML="";
+
+    treeData.forEach(item=>{
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+        row.className =
+            "subject-progress-row";
+
+        row.innerHTML =
+
+            "<div class='subject-progress-top'>" +
+
+            "<span>" +
+            item.name +
+            "</span>" +
+
+            "<span>" +
+            (item.completed ? "100%" : "0%") +
+            "</span>" +
+
+            "</div>";
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+/* TOOLBAR */
+
+function exec(command){
+
+    document.execCommand(
+        command,
+        false,
+        null
+    );
+
+    document.getElementById(
+        "editor"
+    ).focus();
+
+}
+
+
+function formatBlock(value){
+
+    document.execCommand(
+        "formatBlock",
+        false,
+        value
+    );
+
+    document.getElementById(
+        "editor"
+    ).focus();
+
+}
+
+
+function insertLink(){
+
+    const url =
+        prompt("Enter web link:");
+
+    if(!url){
+        return;
+    }
+
+    document.execCommand(
+        "createLink",
+        false,
+        url
+    );
+
+}
+
+
+function insertImage(){
+
+    const url =
+        prompt(
+            "Enter image URL:"
+        );
+
+    if(!url){
+        return;
+    }
+
+    document.execCommand(
+        "insertImage",
+        false,
+        url
+    );
+
+}
+
+
+function toggleDocumentBackground(){
+
+    const colors = [
+        "#ffffff",
+        "#fffdf7",
+        "#f1f7f4",
+        "#f5f1fa",
+        "#f7f3ed"
+    ];
+
+    const current =
+        colors.indexOf(
+            currentDocumentBackground
+        );
+
+    currentDocumentBackground =
+        colors[
+            (current + 1) %
+            colors.length
+        ];
+
+    document.getElementById(
+        "editor"
+    ).style.background =
+        currentDocumentBackground;
+
+}
+
+
+/* READING MODE */
+
+function openReadingMode(){
+
+    const editor =
+        document.getElementById(
+            "editor"
+        );
+
+    document.getElementById(
+        "readingContent"
+    ).innerHTML =
+        editor.innerHTML;
+
+    document.getElementById(
+        "editorPage"
+    ).style.display="none";
+
+    document.getElementById(
+        "readingPage"
+    ).style.display="flex";
+
+}
+
+
+function closeReadingMode(){
+
+    document.getElementById(
+        "readingPage"
+    ).style.display="none";
+
+    document.getElementById(
+        "editorPage"
+    ).style.display="flex";
+
+}
+
+
+function readingFont(amount){
+
+    const content =
+        document.getElementById(
+            "readingContent"
+        );
+
+    const size =
+        parseFloat(
+            getComputedStyle(
+                content
+            ).fontSize
+        );
+
+    content.style.fontSize =
+        Math.max(
+            14,
+            Math.min(
+                30,
+                size + amount
+            )
+        ) + "px";
+
+}
+
+
+function execReading(command){
+
+    document.getElementById(
+        "readingContent"
+    ).focus();
+
+    document.execCommand(
+        command,
+        false,
+        null
+    );
+
+}
+
+
+/* SEARCH */
+
+function openSearch(){
+
+    const overlay =
+        document.getElementById(
+            "searchOverlay"
+        );
+
+    overlay.style.display="flex";
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+    input.value="";
+
+    input.focus();
+
+    performSearch();
+
+}
+
+
+function closeSearch(){
+
+    document.getElementById(
+        "searchOverlay"
+    ).style.display="none";
+
+}
+
+
+document.getElementById(
+    "searchOverlay"
+).addEventListener(
+    "click",
+    event=>{
+
+        if(
+            event.target.id ===
+            "searchOverlay"
+        ){
+            closeSearch();
+        }
+
+    }
+);
+
+
+function flattenTree(list,result=[]){
+
+    list.forEach(item=>{
+
+        result.push(item);
+
+        if(item.children){
+
+            flattenTree(
+                item.children,
+                result
+            );
+
+        }
+
+    });
+
+    return result;
+
+}
+
+
+function performSearch(){
+
+    const query =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+    const results =
+        document.getElementById(
+            "searchResults"
+        );
+
+    results.innerHTML="";
+
+    if(!query){
+        return;
+    }
+
+    const all =
+        flattenTree(treeData);
+
+    all.forEach(item=>{
+
+        const text =
+            (
+                item.name +
+                " " +
+                (
+                    documents[item.id] ||
+                    ""
+                ).replace(
+                    /<[^>]*>/g,
+                    " "
+                )
+            ).toLowerCase();
+
+        if(text.includes(query)){
+
+            const result =
+                document.createElement(
+                    "div"
+                );
+
+            result.className =
+                "search-result";
+
+            result.innerHTML =
+                "<strong>" +
+                item.name +
+                "</strong><br>" +
+                "<small>Open document</small>";
+
+            result.onclick=()=>{
+
+                closeSearch();
+
+                openDocument(item);
+
+            };
+
+            results.appendChild(result);
+
+        }
+
+    });
+
+}
+
+
+/* AI */
+
+function openAI(){
+
+    alert(
+        "AI Assistant is ready for the next integration. " +
+        "The toolbar is already prepared for rewrite, correct, expand, shorten, summarise and generate."
+    );
+
+}
+
+
+/* EXPORT */
+
+function exportDocument(){
+
+    if(!currentItem){
+        return;
+    }
+
+    const text =
+        document.getElementById(
+            "editor"
+        ).innerText;
+
+    const blob =
+        new Blob(
+            [text],
+            {type:"text/plain"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href=url;
+
+    link.download =
+        currentItem.name +
+        ".txt";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* SETTINGS */
+
+function openSettings(){
+
+    document.getElementById(
+        "settingsModal"
+    ).style.display="flex";
+
+}
+
+
+function openProfile(){
+
+    document.getElementById(
+        "profileModal"
+    ).style.display="flex";
+
+}
+
+
+function closeModal(id){
+
+    document.getElementById(
+        id
+    ).style.display="none";
+
+}
+
+
+function setTheme(background){
+
+    document.documentElement
+        .style.setProperty(
+            "--bg",
+            background
+        );
+
+    localStorage.setItem(
+        "notoTheme",
+        background
+    );
+
+}
+
+
+function changeDefaultFont(size){
+
+    document.getElementById(
+        "editor"
+    ).style.fontSize =
+        size + "px";
+
+    localStorage.setItem(
+        "notoFontSize",
+        size
+    );
+
+}
+
+
+/* PROFILE */
+
+async function loadProfile(){
+
+    try{
+
+        const {
+            data
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+        if(
+            data &&
+            data.user
+        ){
+
+            document.getElementById(
+                "profileEmail"
+            ).value =
+                data.user.email || "";
+
+            document.getElementById(
+                "profileName"
+            ).value =
+                data.user.user_metadata
+                    ?.name || "";
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+
+async function saveProfile(){
+
+    const name =
+        document.getElementById(
+            "profileName"
+        ).value.trim();
+
+    const {
+        error
+    } =
+    await supabaseClient
+        .auth
+        .updateUser({
+            data:{
+                name:name
+            }
+        });
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    alert("Profile updated.");
+
+}
+
+
+/* SIDEBAR */
+
+function toggleSidebar(){
+
+    document.getElementById(
+        "sidebar"
+    ).classList.toggle(
+        "collapsed"
+    );
+
+}
+
+
+/* LOGOUT */
+
+async function logout(){
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* AUTH */
+
+async function checkAuth(){
+
+    try{
+
+        const {
+            data
+        } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+        if(
+            !data ||
+            !data.session
+        ){
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* INITIALISE */
+
+loadLocalData();
+
+const savedTheme =
+    localStorage.getItem(
+        "notoTheme"
+    );
+
+if(savedTheme){
+
+    document.documentElement
+        .style.setProperty(
+            "--bg",
+            savedTheme
+        );
+
+}
+
+const savedFont =
+    localStorage.getItem(
+        "notoFontSize"
+    );
+
+if(savedFont){
+
+    document.getElementById(
+        "editor"
+    ).style.fontSize =
+        savedFont + "px";
+
+}
+
+renderTree();
+
+loadProfile();
+
+checkAuth();
+
+</script>
+
+</body>
+</html>    padding: 0 10px;
     margin-bottom: 35px;
 }
 
