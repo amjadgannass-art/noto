@@ -43,6 +43,137 @@ label {
 }
 
 input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd9e8;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #252336;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.back {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #686579;
+  text-decoration: none;
+}
+
+#message {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>Create your Noto account</h1>
+  <p class="subtitle">Start building your personal space.</p>
+
+  <label for="name">Name</label>
+  <input id="name" type="text" placeholder="Your name">
+
+  <label for="email">Email</label>
+  <input id="email" type="email" placeholder="Your email">
+
+  <label for="password">Password</label>
+  <input id="password" type="password" placeholder="Create a password">
+
+  <button id="signupButton">Create Account</button>
+
+  <p id="message"></p>
+
+  <a class="back" href="index.html">Back to Noto</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://bauqaxntmhpiuqdnkrun.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhdXFheG50bWhwaXVxZG5rcnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTM4MTUsImV4cCI6MjEwNTU2OTgxNX0.0p5V6-p4MddUc2j7WGbCyfOnEGNIJMK3uTQzETZAeiA";
+
+const { createClient } = supabase;
+const supabaseClient = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+const button = document.getElementById("signupButton");
+const message = document.getElementById("message");
+
+button.addEventListener("click", async () => {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  message.textContent = "";
+
+  if (!name || !email || !password) {
+    message.textContent = "Please complete all fields.";
+    return;
+  }
+
+  if (password.length < 6) {
+    message.textContent = "Password must be at least 6 characters.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Creating account...";
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      data: {
+        name: name
+      }
+    }
+  });
+
+  if (error) {
+    message.textContent = error.message;
+    button.disabled = false;
+    button.textContent = "Create Account";
+    return;
+  }
+
+  message.textContent = "Account created successfully!";
+  button.textContent = "Account Created";
+});
+</script>
+
+</body>
+</html>}
+
+label {
+  display: block;
+  margin: 16px 0 7px;
+  font-weight: 600;
+}
+
+input {
   width: 100%;
   padding: 14px;
   border: 1px solid #ddd9e8;
