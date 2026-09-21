@@ -43,6 +43,7 @@ label {
 }
 
 input {
+  box-sizing: border-box;
   width: 100%;
   padding: 14px;
   border: 1px solid #ddd9e8;
@@ -63,12 +64,23 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .back {
   display: block;
   text-align: center;
   margin-top: 20px;
   color: #686579;
   text-decoration: none;
+}
+
+#message {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -79,16 +91,65 @@ button {
   <h1>Welcome back</h1>
   <p class="subtitle">Log in to your Noto space.</p>
 
-  <label>Email</label>
-  <input type="email" placeholder="Your email">
+  <label for="email">Email</label>
+  <input id="email" type="email" placeholder="Your email">
 
-  <label>Password</label>
-  <input type="password" placeholder="Your password">
+  <label for="password">Password</label>
+  <input id="password" type="password" placeholder="Your password">
 
-  <button>Log In</button>
+  <button id="loginButton">Log In</button>
+
+  <p id="message"></p>
 
   <a class="back" href="index.html">Back to Noto</a>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://bauqaxntmhpiuqdnkrun.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhdXFheG50bWhwaXVxZG5rcnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTM4MTUsImV4cCI6MjEwNTU2OTgxNX0.0p5V6-p4MddUc2j7WGbCyfOnEGNIJMK3uTQzETZAeiA";
+
+const { createClient } = supabase;
+
+const supabaseClient = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+const button = document.getElementById("loginButton");
+const message = document.getElementById("message");
+
+button.addEventListener("click", async () => {
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  message.textContent = "";
+
+  if (!email || !password) {
+    message.textContent = "Please enter your email and password.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Logging in...";
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    message.textContent = error.message;
+    button.disabled = false;
+    button.textContent = "Log In";
+    return;
+  }
+
+  window.location.href = "app.html";
+});
+</script>
 
 </body>
 </html>
