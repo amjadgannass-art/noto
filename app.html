@@ -17,52 +17,91 @@ body {
     color: #1f2937;
 }
 
-/* LEFT SIDEBAR */
+/* SIDEBAR */
+
 .sidebar {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 250px;
+    width: 270px;
     background: white;
     border-right: 1px solid #e5e7eb;
-    padding: 25px 18px;
+    padding: 25px 15px;
+    overflow-y: auto;
 }
 
 .logo {
-    font-size: 25px;
+    font-size: 26px;
     font-weight: 700;
+    padding: 0 10px;
     margin-bottom: 35px;
-    padding-left: 10px;
 }
 
 .section-title {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     color: #9ca3af;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
     padding: 0 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
-.subject {
+.tree {
+    font-size: 15px;
+}
+
+.tree-item {
+    margin: 2px 0;
+}
+
+.item-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 10px;
-    border-radius: 10px;
-    color: #374151;
-    cursor: pointer;
+    gap: 5px;
+    min-height: 40px;
+    border-radius: 9px;
 }
 
-.subject:hover {
+.item-row:hover {
     background: #f3f4f6;
 }
 
-.add-subject {
+.arrow {
+    width: 25px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.item-name {
+    flex: 1;
+    padding: 8px 5px;
+    cursor: pointer;
+}
+
+.menu {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #9ca3af;
+    font-size: 17px;
+}
+
+.children {
+    margin-left: 22px;
+    border-left: 1px solid #e5e7eb;
+    padding-left: 7px;
+}
+
+.add-root {
     width: 100%;
-    margin-top: 12px;
+    margin-top: 15px;
     padding: 11px;
     border: 1px dashed #d1d5db;
     border-radius: 10px;
@@ -71,13 +110,14 @@ body {
     cursor: pointer;
 }
 
-.add-subject:hover {
+.add-root:hover {
     background: #f9fafb;
 }
 
-/* MAIN AREA */
+/* MAIN */
+
 .main {
-    margin-left: 250px;
+    margin-left: 270px;
     min-height: 100vh;
 }
 
@@ -90,6 +130,10 @@ header {
     padding: 0 30px;
 }
 
+.header-title {
+    font-weight: 600;
+}
+
 .logout {
     margin-left: auto;
     padding: 10px 18px;
@@ -100,7 +144,9 @@ header {
     cursor: pointer;
 }
 
-.content {
+/* DASHBOARD */
+
+.dashboard-content {
     max-width: 1100px;
     padding: 50px 35px;
 }
@@ -139,13 +185,103 @@ h1 {
     margin: 15px 0;
 }
 
+/* WRITING PAGE */
+
+.writing-page {
+    display: none;
+    min-height: calc(100vh - 70px);
+    background: #fff;
+}
+
+.writing-header {
+    height: 65px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    gap: 15px;
+}
+
+.back-button {
+    border: none;
+    background: #f3f4f6;
+    padding: 9px 15px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.page-name {
+    font-weight: 600;
+}
+
+.writing-area {
+    width: min(900px, calc(100% - 50px));
+    margin: 45px auto;
+}
+
+.editor {
+    min-height: 65vh;
+    outline: none;
+    font-size: 18px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+.editor:empty:before {
+    content: "Start writing...";
+    color: #c4c7cc;
+}
+
+.references {
+    margin-top: 50px;
+    padding-top: 18px;
+    border-top: 1px solid #d1d5db;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* CONTEXT MENU */
+
+.context-menu {
+    display: none;
+    position: fixed;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    padding: 6px;
+    z-index: 1000;
+    width: 160px;
+}
+
+.context-menu button {
+    display: block;
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 9px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.context-menu button:hover {
+    background: #f3f4f6;
+}
+
+/* MOBILE */
+
 @media (max-width: 700px) {
     .sidebar {
-        width: 190px;
+        width: 220px;
     }
 
     .main {
-        margin-left: 190px;
+        margin-left: 220px;
+    }
+
+    .writing-area {
+        width: calc(100% - 30px);
     }
 }
 </style>
@@ -153,30 +289,41 @@ h1 {
 
 <body>
 
-<!-- LEFT NAVIGATION -->
+<!-- SIDEBAR -->
+
 <aside class="sidebar">
 
     <div class="logo">Noto</div>
 
     <div class="section-title">Subjects</div>
 
-    <div id="subjects"></div>
+    <div id="tree" class="tree"></div>
 
-    <button class="add-subject" onclick="addSubject()">
+    <button class="add-root" onclick="addRootItem()">
         + Add subject
     </button>
 
 </aside>
 
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
+
 <div class="main">
 
     <header>
-        <button class="logout" onclick="logout()">Log Out</button>
+        <div class="header-title" id="headerTitle">
+            Study Dashboard
+        </div>
+
+        <button class="logout" onclick="logout()">
+            Log Out
+        </button>
     </header>
 
-    <div class="content">
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboardPage" class="dashboard-content">
 
         <h1>Study Dashboard</h1>
 
@@ -188,7 +335,7 @@ h1 {
 
             <div class="card">
                 <h2>Documents</h2>
-                <div class="number">0</div>
+                <div class="number" id="documentCount">0</div>
                 <p>Documents completed</p>
             </div>
 
@@ -206,7 +353,51 @@ h1 {
 
         </div>
 
-    </div>
+    </section>
+
+
+    <!-- WRITING PAGE -->
+
+    <section id="writingPage" class="writing-page">
+
+        <div class="writing-header">
+
+            <button class="back-button" onclick="showDashboard()">
+                ← Dashboard
+            </button>
+
+            <div class="page-name" id="pageName"></div>
+
+        </div>
+
+        <div class="writing-area">
+
+            <div
+                id="editor"
+                class="editor"
+                contenteditable="true"
+            ></div>
+
+            <div class="references">
+                References
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- CONTEXT MENU -->
+
+<div id="contextMenu" class="context-menu">
+
+    <button onclick="addChild()">+ Add sub-item</button>
+
+    <button onclick="renameItem()">Rename</button>
+
+    <button onclick="deleteItem()">Delete</button>
 
 </div>
 
@@ -214,6 +405,7 @@ h1 {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
 const SUPABASE_URL = "https://bauqaxntmhpiuqdnkrun.supabase.co";
 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhdXFheG50bWhwaXVxZG5rcnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTM4MTUsImV4cCI6MjEwNTU2OTgxNX0.0p5V6-p4MddUc2j7WGbCyfOnEGNIJMK3uTQzETZAeiA";
@@ -223,10 +415,168 @@ const supabaseClient = supabase.createClient(
     SUPABASE_ANON_KEY
 );
 
-let subjects = [];
+
+/* SAMPLE NAVIGATION */
+
+let treeData = [
+    {
+        id: 1,
+        name: "Symptom-based",
+        children: [],
+        expanded: true
+    }
+];
 
 
-function addSubject() {
+let nextId = 2;
+
+let selectedItem = null;
+
+
+/* RENDER TREE */
+
+function renderTree() {
+
+    const tree = document.getElementById("tree");
+
+    tree.innerHTML = "";
+
+    treeData.forEach(function(item) {
+
+        tree.appendChild(createTreeItem(item));
+
+    });
+
+    document.getElementById("subjectCount").textContent =
+        treeData.length;
+}
+
+
+/* CREATE TREE ITEM */
+
+function createTreeItem(item) {
+
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "tree-item";
+
+
+    const row = document.createElement("div");
+
+    row.className = "item-row";
+
+
+    const arrow = document.createElement("button");
+
+    arrow.className = "arrow";
+
+    if (item.children && item.children.length > 0) {
+
+        arrow.textContent = item.expanded ? "▼" : "▶";
+
+        arrow.onclick = function(event) {
+
+            event.stopPropagation();
+
+            item.expanded = !item.expanded;
+
+            renderTree();
+
+        };
+
+    } else {
+
+        arrow.textContent = "";
+
+    }
+
+
+    const name = document.createElement("div");
+
+    name.className = "item-name";
+
+    name.textContent = item.name;
+
+
+    name.onclick = function() {
+
+        openWritingPage(item);
+
+    };
+
+
+    name.oncontextmenu = function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        selectedItem = item;
+
+        showContextMenu(event.clientX, event.clientY);
+
+    };
+
+
+    const menu = document.createElement("button");
+
+    menu.className = "menu";
+
+    menu.textContent = "⋯";
+
+    menu.onclick = function(event) {
+
+        event.stopPropagation();
+
+        selectedItem = item;
+
+        showContextMenu(
+            event.clientX,
+            event.clientY
+        );
+
+    };
+
+
+    row.appendChild(arrow);
+
+    row.appendChild(name);
+
+    row.appendChild(menu);
+
+    wrapper.appendChild(row);
+
+
+    if (
+        item.children &&
+        item.children.length > 0 &&
+        item.expanded
+    ) {
+
+        const children = document.createElement("div");
+
+        children.className = "children";
+
+        item.children.forEach(function(child) {
+
+            children.appendChild(
+                createTreeItem(child)
+            );
+
+        });
+
+        wrapper.appendChild(children);
+
+    }
+
+
+    return wrapper;
+}
+
+
+/* ADD SUBJECT */
+
+function addRootItem() {
 
     const name = prompt("Enter subject name:");
 
@@ -234,147 +584,236 @@ function addSubject() {
         return;
     }
 
-    subjects.push(name.trim());
-
-    renderSubjects();
-}
-
-
-function renderSubjects() {
-
-    const container = document.getElementById("subjects");
-
-    container.innerHTML = "";
-
-    subjects.forEach(function(subject) {
-
-        const item = document.createElement("div");
-
-        item.className = "subject";
-
-        item.innerHTML = "📚 <span>" + subject + "</span>";
-
-        container.appendChild(item);
-
+    treeData.push({
+        id: nextId++,
+        name: name.trim(),
+        children: [],
+        expanded: true
     });
 
-    document.getElementById("subjectCount").textContent = subjects.length;
+    renderTree();
 }
 
 
-async function logout() {
+/* ADD SUB-ITEM */
 
-    await supabaseClient.auth.signOut();
+function addChild() {
 
-    window.location.href = "index.html";
-}
-</script>
+    if (!selectedItem) {
+        return;
+    }
 
-</body>
-</html>    border: none;
-    border-radius: 10px;
-    background: #1f2937;
-    color: white;
-    cursor: pointer;
-}
+    hideContextMenu();
 
-main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 50px 25px;
-}
+    const name = prompt(
+        "Enter name for the new item:"
+    );
 
-h1 {
-    font-size: 36px;
-    margin-bottom: 8px;
-}
+    if (!name || !name.trim()) {
+        return;
+    }
 
-.subtitle {
-    color: #6b7280;
-    margin-bottom: 40px;
-}
+    if (!selectedItem.children) {
+        selectedItem.children = [];
+    }
 
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    selectedItem.children.push({
+        id: nextId++,
+        name: name.trim(),
+        children: [],
+        expanded: true
+    });
+
+    selectedItem.expanded = true;
+
+    renderTree();
 }
 
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 25px;
-    border: 1px solid #e5e7eb;
+
+/* FIND ITEM */
+
+function findParent(list, target) {
+
+    for (const item of list) {
+
+        if (item === target) {
+            return list;
+        }
+
+        if (item.children) {
+
+            const result =
+                findParent(item.children, target);
+
+            if (result) {
+                return result;
+            }
+
+        }
+
+    }
+
+    return null;
 }
 
-.card h2 {
-    margin-top: 0;
-    font-size: 20px;
+
+/* RENAME */
+
+function renameItem() {
+
+    if (!selectedItem) {
+        return;
+    }
+
+    hideContextMenu();
+
+    const name = prompt(
+        "Rename:",
+        selectedItem.name
+    );
+
+    if (!name || !name.trim()) {
+        return;
+    }
+
+    selectedItem.name = name.trim();
+
+    renderTree();
 }
 
-.number {
-    font-size: 36px;
-    font-weight: 700;
-    margin: 15px 0;
+
+/* DELETE */
+
+function deleteItem() {
+
+    if (!selectedItem) {
+        return;
+    }
+
+    hideContextMenu();
+
+    const confirmed = confirm(
+        "Delete " + selectedItem.name + "?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const parentList =
+        findParent(treeData, selectedItem);
+
+    if (parentList) {
+
+        const index =
+            parentList.indexOf(selectedItem);
+
+        if (index !== -1) {
+            parentList.splice(index, 1);
+        }
+
+    }
+
+    renderTree();
 }
-</style>
-</head>
 
-<body>
 
-<header>
-    <div class="logo">Noto</div>
-    <button class="logout" onclick="logout()">Log Out</button>
-</header>
+/* CONTEXT MENU */
 
-<main>
+function showContextMenu(x, y) {
 
-    <h1>Study Dashboard</h1>
+    const menu =
+        document.getElementById("contextMenu");
 
-    <p class="subtitle">
-        Your space to organise, write and track your learning.
-    </p>
+    menu.style.display = "block";
 
-    <div class="dashboard">
+    menu.style.left = x + "px";
 
-        <div class="card">
-            <h2>Documents</h2>
-            <div class="number">0</div>
-            <p>Documents completed</p>
-        </div>
+    menu.style.top = y + "px";
+}
 
-        <div class="card">
-            <h2>Subjects</h2>
-            <div class="number">0</div>
-            <p>Subjects created</p>
-        </div>
 
-        <div class="card">
-            <h2>Overall Progress</h2>
-            <div class="number">0%</div>
-            <p>Your current progress</p>
-        </div>
+function hideContextMenu() {
 
-    </div>
+    document.getElementById(
+        "contextMenu"
+    ).style.display = "none";
 
-</main>
+}
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-const SUPABASE_URL = "https://bauqaxntmhpiuqdnkrun.supabase.co";
-
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhdXFheG50bWhwaXVxZG5rcnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTM4MTUsImV4cCI6MjEwNTU2OTgxNX0.0p5V6-p4MddUc2j7WGbCyfOnEGNIJMK3uTQzETZAeiA";
-
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
+document.addEventListener(
+    "click",
+    function() {
+        hideContextMenu();
+    }
 );
 
-async function logout() {
-    await supabaseClient.auth.signOut();
-    window.location.href = "index.html";
+
+/* OPEN WRITING PAGE */
+
+function openWritingPage(item) {
+
+    document.getElementById(
+        "dashboardPage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "writingPage"
+    ).style.display = "block";
+
+    document.getElementById(
+        "pageName"
+    ).textContent = item.name;
+
+    document.getElementById(
+        "headerTitle"
+    ).textContent = item.name;
+
+    const editor =
+        document.getElementById("editor");
+
+    editor.innerHTML = "";
+
+    editor.focus();
+
 }
+
+
+/* DASHBOARD */
+
+function showDashboard() {
+
+    document.getElementById(
+        "writingPage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "dashboardPage"
+    ).style.display = "block";
+
+    document.getElementById(
+        "headerTitle"
+    ).textContent = "Study Dashboard";
+
+}
+
+
+/* LOGOUT */
+
+async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href = "index.html";
+
+}
+
+
+/* START */
+
+renderTree();
+
 </script>
 
 </body>
